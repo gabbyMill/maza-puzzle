@@ -1,1 +1,0 @@
-./maze/room-0/room-1/chest-1.json
