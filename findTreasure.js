@@ -1,8 +1,13 @@
 const fs = require("fs");
 const path = require("path");
-// import generateMaze from "./mazeGenerator/mazeGenerator.js";
+
+const mazeStartingPoint = "./new-maze-folder";
+fs.rmSync(mazeStartingPoint, { recursive: true, force: true });
+
+const { generateMaze } = require("./mazeGenerator/mazeGenerator.js");
+
 function findTreasureSync(roomPath) {
-  if (fs.readFileSync("./map.txt").toString().includes(":moneybag:")) {
+  if (fs.readFileSync("./map.txt").toString().includes("💰")) {
     return;
   }
   const arrayOfFiles = fs.readdirSync(`${roomPath}`);
@@ -12,19 +17,21 @@ function findTreasureSync(roomPath) {
       path.extname(file) === ".json" &&
       !contentOfMap.includes(roomPath + file + "/")
     ) {
-      checkContent(roomPath + file);
+      openChestSync(roomPath + file);
     } else {
       findTreasureSync(roomPath + file + "/");
     }
   });
 }
-function checkContent(chestPath) {
+
+function openChestSync(chestPath) {
+  // chest path is the path to a json file
   const content = fs.readFileSync(chestPath).toString();
   try {
     const chest = JSON.parse(content);
     if (chest.hasOwnProperty("treasure")) {
-      console.log(`treasure found at ${chestPath}`);
-      drawMapSync(chestPath + "/" + ":moneybag:");
+      // console.log(`treasure found at ${chestPath}`);
+      drawMapSync(chestPath + "/" + "💰");
       return;
     } else {
       const goodPath = checkIfValidPath(chest);
@@ -48,8 +55,8 @@ function checkIfValidPath(chest) {
   }
 }
 resetMap();
-findTreasureSync("./maze/");
-// findTreasureSync(generateMaze());
+generateMaze(`${mazeStartingPoint}`, 3, 4, 9);
+findTreasureSync(`${mazeStartingPoint}/`);
 function drawMapSync(path) {
   const content = fs.readFileSync("./map.txt").toString();
   fs.writeFileSync("./map.txt", `${content}\n${path}`);

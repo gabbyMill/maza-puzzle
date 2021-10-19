@@ -1,4 +1,4 @@
-import fs from 'fs';
+const fs = require("fs");
 
 let allRooms = [];
 
@@ -32,13 +32,14 @@ function createClues(dir, rooms, depth) {
     createClues(content.clue, rooms, depth - 1);
   }
   fs.writeFileSync(`${dir}/chest-1.json`, JSON.stringify(content));
-  if (Math.random() < 0.3) fs.writeFileSync(`${dir}/chest-2.json`, 'I`m a chest decoy');
+  if (Math.random() < 0.3)
+    fs.writeFileSync(`${dir}/chest-2.json`, "I`m a chest decoy");
   if (Math.random() < 0.3) {
     fs.writeFileSync(
       `${dir}/chest-3.json`,
       JSON.stringify({
-        clue: './bad/file/path',
-      }),
+        clue: "./bad/file/path",
+      })
     );
   }
 }
@@ -49,12 +50,17 @@ function createClues(dir, rooms, depth) {
  * @param {Number} depth maze folder graph depth
  * @param {Number} length how many clues to the tressure
  */
-export default function generateMaze(mazeDir, maxWidth, depth, length) {
+function generateMaze(mazeDir, maxWidth, depth, length) {
+  // export default
   createRoom(mazeDir, maxWidth, depth, maxWidth);
 
   const startingClue = mazeDir;
-  allRooms = allRooms.filter((dir) => dir !== startingClue);
+  allRooms = allRooms.filter(dir => dir !== startingClue);
 
   createClues(startingClue, shuffleArray(allRooms), length);
   return startingClue;
 }
+
+module.exports = {
+  generateMaze,
+};
