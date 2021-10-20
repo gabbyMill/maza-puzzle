@@ -1,0 +1,7 @@
+
+./maze/chest-1.json/
+./maze/room-0/room-0/chest-1.json/
+./maze/room-1/room-0/chest-1.json/
+./maze/room-1/room-2/chest-1.json/💰
+./maze/room-2/room-0/chest-1.json/
+./maze/room-0/room-1/chest-1.json/💰
